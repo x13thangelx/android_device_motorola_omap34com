@@ -124,8 +124,7 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/etc/gps.conf:system/etc/gps.conf \
 	$(DEVICE_PREBUILT)/etc/media_profiles.xml:system/etc/media_profiles.xml \
 	$(DEVICE_PREBUILT)/etc/powervr.ini:system/etc/powervr.ini \
-	$(DEVICE_PREBUILT)/etc/vold.fstab:system/etc/vold.fstab \
-	$(DEVICE_PREBUILT)/media/bootanimation.zip:system/media/bootanimation.zip
+	$(DEVICE_PREBUILT)/etc/vold.fstab:system/etc/vold.fstab
 
 
 # Permissions files
@@ -186,5 +185,4 @@ PRODUCT_LOCALES += en_US
 
 $(call inherit-product, frameworks/base/build/phone-hdpi-512-dalvik-heap.mk)
 $(call inherit-product, hardware/ti/omap3/Android.mk)
-$(call inherit-product-if-exists, vendor/cm/config/common_full_phone.mk)
 $(call inherit-product-if-exists, vendor/motorola/omap34com/device-vendor.mk)

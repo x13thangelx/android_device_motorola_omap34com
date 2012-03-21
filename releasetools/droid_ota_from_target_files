@@ -346,11 +346,11 @@ def WriteFullOTAPackage(input_zip, output_zip):
 #    ts = GetBuildProp("ro.build.date.utc", input_zip)
 #    script.AssertOlderBuild(ts)
 
-  script.Print("-=    CM9  Beta    =-")
-  script.Print("       Port by:      ")
-  script.Print("     bikedude880     ")
-  script.Print("     x13thangelx     ")
-  script.Print("                     ")
+  script.Print(" ")
+  script.Print("        ___  __  __  __  __  __  __  _  _  ")
+  script.Print("       / __)(  )(  )(  \/  )(  \/  )( \/ ) ")
+  script.Print("      ( (_-. )(__)(  )    (  )    (  \  /  ")
+  script.Print("       \___/(______)(_/\/\_)(_/\/\_) (__)  ")
 
 # kernel check...
 #  script.Print(" Checking Kernel Version...  ")
@@ -392,6 +392,11 @@ def WriteFullOTAPackage(input_zip, output_zip):
   script.Print(" Setting Permissions... ")
   Item.GetMetadata(input_zip)
   Item.Get("system").SetPermissions(script)
+  
+  script.SetPermissionsRecursive("/system/etc/init.d", 0, 0, 0755, 0555)
+  script.SetPermissions("/system/bin/su", 0, 0, 06755)
+  script.SetPermissions("/data/cron", 0, 0, 0755)
+  script.SetPermissions("/data/cron/root", 0, 0, 0644)
 
   script.ShowProgress(0.2, 0)
 
