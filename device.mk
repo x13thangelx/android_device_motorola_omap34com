@@ -20,7 +20,6 @@
 #
 # Everything in this directory will become public
 
-DEVICE_PACKAGE_OVERLAYS := device/motorola/omap34com/overlay
 DEVICE_PREBUILT := device/motorola/omap34com/prebuilt
 
 # This device is xhdpi.  However the platform doesn't
@@ -33,7 +32,9 @@ PRODUCT_AAPT_PREF_CONFIG := hdpi
 # Camera
 PRODUCT_PACKAGES := \
 	camera.omap3 \
-	hwcomposer.default
+	hwcomposer.default \
+        libcamera \
+        libui
 
 # Modem
 PRODUCT_PACKAGES += \
@@ -43,24 +44,25 @@ PRODUCT_PACKAGES += \
 	libreference-cdma-sms \
 	radiooptions
 
+# jpg hw decode/encode
+PRODUCT_PACKAGES += libOMX.TI.JPEG.Encoder libOMX.TI.JPEG.decoder libstagefrighthw
+
 # OMX
 PRODUCT_PACKAGES += \
 	dspexec \
 	libbridge \
-	libstagefrighthw \
-	libstagefright_omx \
+	libLCML \
 	libOMX_Core \
 	libOMX.TI.AAC.decode \
-	libOMX.TI.AAC.decode \
+	libOMX.TI.AAC.encode \
 	libOMX.TI.AMR.decode \
-	libOMX.TI.AMR.encode \
-	libOMX.TI.JPEG.Encoder \
 	libOMX.TI.MP3.decode \
 	libOMX.TI.Video.Decoder \
 	libOMX.TI.Video.encoder \
 	libOMX.TI.WBAMR.decode \
 	libOMX.TI.WBAMR.encode \
-	libOMX.TI.WMA.decode
+	libOMX.TI.WMA.decode \
+	libOMX.TI.VPP
 
 # Wifi
 PRODUCT_PACKAGES += \
@@ -73,8 +75,8 @@ PRODUCT_PACKAGES += \
 	su \
 	mot_boot_mode \
 	charge_only_mode \
-	com.android.future.usb.accessory \
-	com.android.nfc_extras
+	com.android.future.usb.accessory
+
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
@@ -109,7 +111,7 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/imgtec/libpvrANDROID_WSEGL.so:system/lib/libpvrANDROID_WSEGL.so \
 	$(DEVICE_PREBUILT)/imgtec/libsrv_init.so:system/lib/libsrv_init.so \
 	$(DEVICE_PREBUILT)/imgtec/libsrv_um.so:system/lib/libsrv_um.so \
-	$(DEVICE_PREBUILT)/imgtec/libusc.so:system/lib/libusc.so \
+	$(DEVICE_PREBUILT)/imgtec/libusc.o:system/lib/libusc.so \
 	$(DEVICE_PREBUILT)/imgtec/libeglinfo.so:system/lib/egl/libeglinfo.so \
 	$(DEVICE_PREBUILT)/imgtec/libgles1_texture_stream.so:system/lib/egl/libgles1_texture_stream.so \
 	$(DEVICE_PREBUILT)/imgtec/libgles2_texture_stream.so:system/lib/egl/libgles2_texture_stream.so \
@@ -174,6 +176,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.google.gmsversion=2.3_r3 \
 	ro.kernel.android.ril=yes \
 	ro.product.multi_touch_enabled=true \
+        ro.media.dec.jpeg.memcap=20000000 \
 	ro.ril.ignore.linkiperror=true \
 	ro.setupwizard.enable_bypass=1 \
 	ro.setupwizard.mode=OPTIONAL \
