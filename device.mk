@@ -44,7 +44,10 @@ PRODUCT_PACKAGES += \
 	libreference-cdma-sms \
 	radiooptions
 
-# jpg hw decode/encode
+# ICS graphics
+PRODUCT_PACKAGES += libGLESv2 libEGL libGLESv1_CM
+
+# for jpeg hw encoder/decoder
 PRODUCT_PACKAGES += libOMX.TI.JPEG.Encoder libOMX.TI.JPEG.decoder libstagefrighthw
 
 # OMX
@@ -76,7 +79,6 @@ PRODUCT_PACKAGES += \
 	mot_boot_mode \
 	charge_only_mode \
 	com.android.future.usb.accessory
-
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
@@ -136,25 +138,30 @@ PRODUCT_COPY_FILES += \
 # Permissions files
 PRODUCT_COPY_FILES += \
 	frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
-	frameworks/base/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
 	frameworks/base/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
-	frameworks/base/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-	frameworks/base/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml \
+	frameworks/base/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
+	frameworks/base/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
+	frameworks/base/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
 	frameworks/base/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
 	frameworks/base/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-	frameworks/base/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml
+	frameworks/base/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml \
+	frameworks/base/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
+	frameworks/base/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
+	frameworks/base/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
+	frameworks/base/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
+	packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:/system/etc/permissions/android.software.live_wallpaper.xml \
 
 # these need to be here for the installer, just put them here for now
 PRODUCT_COPY_FILES += \
-    device/motorola/omap34com/releaseutils/mke2fs:system/bin/mke2fs \
-    device/motorola/omap34com/releaseutils/tune2fs:system/bin/tune2fs \
-    device/motorola/omap34com/releaseutils/check_kernel:system/etc/releaseutils/check_kernel \
-    device/motorola/omap34com/releaseutils/finalize_release:system/etc/finalize_release
+	device/motorola/omap34com/releaseutils/mke2fs:system/bin/mke2fs \
+	device/motorola/omap34com/releaseutils/tune2fs:system/bin/tune2fs \
+	device/motorola/omap34com/releaseutils/check_kernel:system/etc/releaseutils/check_kernel \
+	device/motorola/omap34com/releaseutils/finalize_release:system/etc/finalize_release
 
 # Hijack files
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PREBUILT)/bin/hijack:system/bin/hijack \
-    $(DEVICE_PREBUILT)/bin/hijack.log_dump:system/bin/hijack.log_dump \
+	$(DEVICE_PREBUILT)/bin/hijack:system/bin/hijack \
+	$(DEVICE_PREBUILT)/bin/hijack.log_dump:system/bin/hijack.log_dump \
 
 # Copy all common kernel modules
 PRODUCT_COPY_FILES += $(shell \
@@ -182,7 +189,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.setupwizard.mode=OPTIONAL \
 	ro.telephony.call_ring.delay=1000 \
 	ro.telephony.call_ring.multiple=false \
-	ro.telephony.sms_segment_size=160
+	ro.kernel.android.checkjni=0 \
+	dalvik.vm.checkjni=false \
+	dalvik.vm.dexopt-data-only=1
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
