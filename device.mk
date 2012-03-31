@@ -132,7 +132,9 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/etc/sysctl.conf:system/etc/sysctl.conf \
 	$(DEVICE_PREBUILT)/etc/init.d/11redraw:system/etc/init.d/11redraw \
 	$(DEVICE_PREBUILT)/etc/init.d/12scheduler:system/etc/init.d/12scheduler \
-	$(DEVICE_PREBUILT)/etc/init.d/13kernel:system/etc/init.d/13kernel
+	$(DEVICE_PREBUILT)/etc/init.d/13kernel:system/etc/init.d/13kernel \
+	$(DEVICE_PREBUILT)/etc/init.d/14multitouch:system/etc/init.d/14multitouch \
+	$(DEVICE_PREBUILT)/xbin/multitouch:system/xbin/multitouch
 
 
 # Permissions files
@@ -184,7 +186,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.kernel.android.ril=yes \
 	ro.product.multi_touch_enabled=true \
         ro.media.dec.jpeg.memcap=20000000 \
-	ro.ril.ignore.linkiperror=true \
 	ro.setupwizard.enable_bypass=1 \
 	ro.setupwizard.mode=OPTIONAL \
 	ro.telephony.call_ring.delay=1000 \
