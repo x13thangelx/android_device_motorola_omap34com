@@ -21,6 +21,7 @@
 # Everything in this directory will become public
 
 DEVICE_PREBUILT := device/motorola/omap34com/prebuilt
+DEVICE_PACKAGE_OVERLAYS := device/motorola/omap34com/overlay
 
 # This device is xhdpi.  However the platform doesn't
 # currently contain all of the bitmaps at xhdpi density so
