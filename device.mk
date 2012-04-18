@@ -134,8 +134,8 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/etc/init.d/12scheduler:system/etc/init.d/12scheduler \
 	$(DEVICE_PREBUILT)/etc/init.d/13kernel:system/etc/init.d/13kernel \
 	$(DEVICE_PREBUILT)/etc/init.d/14multitouch:system/etc/init.d/14multitouch \
-	$(DEVICE_PREBUILT)/xbin/multitouch:system/xbin/multitouch
-
+	$(DEVICE_PREBUILT)/xbin/multitouch:system/xbin/multitouch \
+	$(DEVICE_PREBUILT)/xbin/scheduler:system/xbin/scheduler
 
 # Permissions files
 PRODUCT_COPY_FILES += \
