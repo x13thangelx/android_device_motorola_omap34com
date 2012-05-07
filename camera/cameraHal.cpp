@@ -108,56 +108,42 @@ static inline void log_camera_params(const char* name,
 
 void Yuv422iToRgb565 (char* rgb, char* yuv422i, int width, int height)
 {
-    int yuv_index = 0;
-    int rgb_index = 0;
-    int j, i, y1192;
+    int row, pos;
+    int yuvIndex = 0;
+    int rgbIndex = 0;
     int y1, u, y2, v;
     int r, g, b;
+    int yy1, yy2, uv, uu, vv;
 
-    for (j = 0; j < height; j++) {
-        for (i = 0; i < width / 2; i++) {
-
-            y1 = (0xff & yuv422i[yuv_index++]) - 16;
-            u  = (0xff & yuv422i[yuv_index++]) - 128;
-            y2 = (0xff & yuv422i[yuv_index++]) - 16;
-            v  = (0xff & yuv422i[yuv_index++]) - 128;
+    for (row = 0; row < height; row++) {
+        for (pos = 0; pos < width / 2; pos++) {
+            y1 = (0xff & yuyv[yuvIndex++]) - 16;
+            u  = (0xff & yuyv[yuvIndex++]) - 128;
+            y2 = (0xff & yuyv[yuvIndex++]) - 16;
+            v  = (0xff & yuyv[yuvIndex++]) - 128;
 
             if (y1 < 0) y1 = 0;
             if (y2 < 0) y2 = 0;
 
-            y1192 = 1192 * y1;
-            r = (y1192 + 1634 * v);
-            g = (y1192 - 833 * v - 400 * u);
-            b = (y1192 + 2066 * u);
+            yy1 = 1192 * y1;
+            yy2 = 1192 * y2;
+            uv = 833 * v + 400 * u;
+            uu = 2066 * u;
+            vv = 1634 * v;
 
-            if (r < 0) r = 0; else if (r > 262143) r = 262143;
-            if (g < 0) g = 0; else if (g > 262143) g = 262143;
-            if (b < 0) b = 0; else if (b > 262143) b = 262143;
+            r = CLAMP(yy1 + vv, 0, 262143);
+            g = CLAMP(yy1 - uv, 0, 262143);
+            b = CLAMP(yy1 + uu, 0, 262143);
 
-            /* for RGB565 */
-            r = (r >> 13) & 0x1f;
-            g = (g >> 12) & 0x3f;
-            b = (b >> 13) & 0x1f;
+            rgb[rgbIndex++] = ((g >> 7) & 0xe0) | ((b >> 13) & 0x1f);
+            rgb[rgbIndex++] = ((r >> 10) & 0xf8) | ((g >> 15) & 0x07);
 
-            rgb[rgb_index++] = g << 5 | b;
-            rgb[rgb_index++] = r << 3 | g >> 3;
+            r = CLAMP(yy2 + vv, 0, 262143);
+            g = CLAMP(yy2 - uv, 0, 262143);
+            b = CLAMP(yy2 + uu, 0, 262143);
 
-            y1192 = 1192 * y2;
-            r = (y1192 + 1634 * v);
-            g = (y1192 - 833 * v - 400 * u);
-            b = (y1192 + 2066 * u);
-
-            if (r < 0) r = 0; else if (r > 262143) r = 262143;
-            if (g < 0) g = 0; else if (g > 262143) g = 262143;
-            if (b < 0) b = 0; else if (b > 262143) b = 262143;
-
-            /* for RGB565 */
-            r = (r >> 13) & 0x1f;
-            g = (g >> 12) & 0x3f;
-            b = (b >> 13) & 0x1f;
-
-            rgb[rgb_index++] = g << 5 | b;
-            rgb[rgb_index++] = r << 3 | g >> 3;
+            rgb[rgbIndex++] = ((g >> 7) & 0xe0) | ((b >> 13) & 0x1f);
+            rgb[rgbIndex++] = ((r >> 10) & 0xf8) | ((g >> 15) & 0x07);
         }
     }
 }
@@ -224,8 +210,8 @@ camera_memory_t* CameraHAL_GenClientData(const sp<IMemory> &dataPtr,
     data = (void *)((char *)(mHeap->base()) + offset);
 
     clientData = lcdev->request_memory(-1, size, 1, lcdev->user);
-    memcpy(clientData->data, data, size);
-
+    if (clientData)
+        memcpy(clientData->data, data, size);
     return clientData;
 }
 
@@ -388,7 +374,7 @@ int camera_set_preview_window(struct camera_device *device,
 {
     int rv = -EINVAL;
     int min_bufs = -1;
-    const int kBufferCount = 4;
+    const int kBufferCount = 6;
     legacy_camera_device *lcdev = NULL;
 
     if (!device)
