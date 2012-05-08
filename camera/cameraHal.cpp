@@ -332,8 +332,7 @@ void CameraHAL_FixupParams(struct camera_device *device,
     if (!settings.get("mot-areas-to-focus"))
         settings.set("mot-areas-to-focus", "0");
 
-    settings.set("zoom-ratios", "100,200,300,400,500,600");
-
+    settings.set("zoom-ratios", "100,200,300,400");
     settings.set("max-zoom", "4");
 
     /* ISO */
