@@ -22,8 +22,6 @@
 //#define LOG_NDEBUG 0
 #define LOG_FULL_PARAMS
 
-//#define STORE_METADATA_IN_BUFFER
-
 #include <hardware/camera.h>
 #include <ui/Overlay.h>
 #include <binder/IMemory.h>
@@ -32,6 +30,7 @@
 #include <vector>
 #include <ctype.h>
 
+#define CLAMP(x, l, h)  (((x) > (h)) ? (h) : (((x) < (l)) ? (l) : (x)))
 #define CAMHAL_GRALLOC_USAGE GRALLOC_USAGE_HW_TEXTURE | \
 			     GRALLOC_USAGE_HW_RENDER | \
 			     GRALLOC_USAGE_SW_READ_RARELY | \
@@ -120,30 +119,31 @@ static void processPreviewData(char *frame, size_t size,
     buffer_handle_t *bufHandle = NULL;
     preview_stream_ops *window = NULL;
     int32_t stride;
-    buffer_handle_t *bufHandle = NULL;
     void *vaddr;
     int ret;
 
     if (lcdev->window == NULL)
         return;
 
-    if (lcdev->window->dequeue_buffer(lcdev->window, &bufHandle,
-                                      &stride) != NO_ERROR) {
+    window = lcdev->window;
+    ret = window->dequeue_buffer(window, &bufHandle, &stride);
+    if (ret != NO_ERROR) {
         LOGE("%s: ERROR dequeueing the buffer\n", __FUNCTION__);
         return;
     }
 
-    if (lcdev->window->lock_buffer(lcdev->window, bufHandle) != NO_ERROR) {
+    ret = window->lock_buffer(window, bufHandle);
+    if (ret != NO_ERROR) {
         LOGE("%s: ERROR locking the buffer\n", __FUNCTION__);
-        lcdev->window->cancel_buffer(lcdev->window, bufHandle);
+        window->cancel_buffer(window, bufHandle);
         return;
     }
 
-    if (lcdev->gralloc->lock(lcdev->gralloc, *bufHandle, CAMHAL_GRALLOC_USAGE,
+    ret = lcdev->gralloc->lock(lcdev->gralloc, *bufHandle, CAMHAL_GRALLOC_USAGE,
                              0, 0, lcdev->previewWidth, lcdev->previewHeight,
-                             &vaddr) != NO_ERROR) {
+                             &vaddr);
+    if (ret != NO_ERROR)
         return;
-    }
 
     switch (format) {
         case Overlay::FORMAT_YUV422I:
@@ -157,18 +157,9 @@ static void processPreviewData(char *frame, size_t size,
     }
     lcdev->gralloc->unlock(lcdev->gralloc, *bufHandle);
 
-    if (lcdev->window->enqueue_buffer(lcdev->window, bufHandle) != NO_ERROR) {
+    ret = window->enqueue_buffer(window, bufHandle);
+    if (ret != NO_ERROR)
         LOGE("%s: could not enqueue gralloc buffer", __FUNCTION__);
-        return;
-    }
-}
-
-/* Overlay hooks */
-void queue_buffer_hook(void *data, void *buffer, size_t size)
-{
-    if (data != NULL && buffer != NULL) {
-        CameraHAL_ProcessPreviewData((char*)buffer, size, (legacy_camera_device*) data);
-    }
 }
 
 static void overlayQueueBuffer(void *data, void *buffer, size_t size)
@@ -196,6 +187,7 @@ camera_memory_t* GenClientData(const sp<IMemory> &dataPtr,
     clientData = lcdev->request_memory(-1, size, 1, lcdev->user);
     if (clientData)
         memcpy(clientData->data, data, size);
+
     return clientData;
 }
 
@@ -267,7 +259,6 @@ static void releaseCameraFrames(legacy_camera_device *lcdev)
         (*it)->release(*it);
     lcdev->sentFrames.clear();
 }
-
 
 /* Hardware Camera interface handlers. */
 int camera_set_preview_window(struct camera_device *device,
@@ -417,7 +408,6 @@ void camera_stop_recording(struct camera_device *device)
 {
     legacy_camera_device *lcdev = (legacy_camera_device*) device;
     lcdev->hwif->stopRecording();
-    lcdev->hwif->startPreview();
 }
 
 int camera_recording_enabled(struct camera_device *device)
@@ -607,7 +597,6 @@ int camera_device_open(const hw_module_t* module, const char *name,
     camera_ops->cancel_auto_focus          = camera_cancel_auto_focus;
     camera_ops->take_picture               = camera_take_picture;
     camera_ops->cancel_picture             = camera_cancel_picture;
-
     camera_ops->set_parameters             = camera_set_parameters;
     camera_ops->get_parameters             = camera_get_parameters;
     camera_ops->put_parameters             = camera_put_parameters;
