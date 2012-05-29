@@ -44,17 +44,20 @@ PRODUCT_PACKAGES += \
 	radiooptions
 
 # ICS graphics
-PRODUCT_PACKAGES +=\
-        libEGL libGLESv2 libGLESv1_CM
+PRODUCT_PACKAGES += \
+	libEGL libGLESv2 libGLESv1_CM
+ifdef OMAP_ENHANCEMENT
+PRODUCT_PACKAGES += += hwcomposer.omap3
+endif
 
 # Jpeg hw encoder/decoder
 PRODUCT_PACKAGES += \
-	libskiahw libstagefrighthw \
+	libstagefrighthw \
 	libOMX.TI.JPEG.Encoder libOMX.TI.JPEG.decoder \
 
-# DSP	
+# DSP
 PRODUCT_PACKAGES += \
-        cexec.out libbridge
+	cexec.out libbridge
 
 # OMX
 PRODUCT_PACKAGES += \
@@ -73,15 +76,17 @@ PRODUCT_PACKAGES += \
 
 # Wifi
 PRODUCT_PACKAGES += \
-	libCustomWifi \
-	wlan_loader
+	iwmulticall hostap wlan_loader wlan_cu wpa_supplicant \
+	libhostapdcli libCustomWifi libwpa_client libtiOsLib \
+	tiwlan.ini dhcpcd.conf wpa_supplicant.conf hostapd.conf \
+	tiap_loader tiap_cu ndc
 
 # Bluetooth configuration files
 PRODUCT_COPY_FILES += \
 	system/bluetooth/data/main.conf:system/etc/bluetooth/main.conf
 
 # Core
-PRODUCT_PACKAGES += mot_boot_mode charge_only_mode
+PRODUCT_PACKAGES += mot_boot_mode charge_only_mode lights.omap3
 
 # Apps and bin
 PRODUCT_PACKAGES += Superuser su FileManager Torch Usb
@@ -127,6 +132,32 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/imgtec/libgles2_texture_stream.so:system/lib/egl/libgles2_texture_stream.so \
 	$(DEVICE_PREBUILT)/imgtec/gralloc.omap3.so:system/lib/hw/gralloc.omap3.so
 
+# DSP
+PRODUCT_COPY_FILES += \
+	$(DEVICE_PREBUILT)/TI_DSP/bios/baseimage.dof:system/lib/dsp/baseimage.dof \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/720p_h264vdec_sn.dll64P:system/lib/dsp/720p_h264vdec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/720p_h264venc_sn.dll64P:system/lib/dsp/720p_h264venc_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/720p_mp4vdec_sn.dll64P:system/lib/dsp/720p_mp4vdec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/720p_mp4venc_sn.dll64P:system/lib/dsp/720p_mp4venc_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/conversions.dll64P:system/lib/dsp/conversions.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/h264vdec_sn.dll64P:system/lib/dsp/h264vdec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/h264venc_sn.dll64P:system/lib/dsp/h264venc_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/jpegenc_sn.dll64P:system/lib/dsp/jpegenc_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/m4venc_sn.dll64P:system/lib/dsp/m4venc_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/mp3dec_sn.dll64P:system/lib/dsp/mp3dec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/mp4vdec_sn.dll64P:system/lib/dsp/mp4vdec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/mpeg4aacdec_sn.dll64P:system/lib/dsp/mpeg4aacdec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/mpeg4aacenc_sn.dll64P:system/lib/dsp/mpeg4aacenc_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/nbamrdec_sn.dll64P:system/lib/dsp/nbamrdec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/nbamrenc_sn.dll64P:system/lib/dsp/nbamrenc_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/postprocessor_dualout.dll64P:system/lib/dsp/postprocessor_dualout.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/ringio.dll64P:system/lib/dsp/ringio.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/usn.dll64P:system/lib/dsp/usn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/wbamrdec_sn.dll64P:system/lib/dsp/wbamrdec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/wbamrenc_sn.dll64P:system/lib/dsp/wbamrenc_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/wmadec_sn.dll64P:system/lib/dsp/wmadec_sn.dll64P \
+	$(DEVICE_PREBUILT)/TI_DSP/codecs/wmv9dec_sn.dll64P:system/lib/dsp/wmv9dec_sn.dll64P
+
 # Prebuilts
 PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/bin/mount_ext3.sh:system/bin/mount_ext3.sh \
@@ -138,6 +169,7 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/etc/powervr.ini:system/etc/powervr.ini \
 	$(DEVICE_PREBUILT)/etc/vold.fstab:system/etc/vold.fstab \
 	$(DEVICE_PREBUILT)/etc/sysctl.conf:system/etc/sysctl.conf \
+	$(DEVICE_PREBUILT)/etc/init.d/00adb_during_boot:system/etc/init.d/00adb_during_boot \
 	$(DEVICE_PREBUILT)/etc/init.d/12scheduler:system/etc/init.d/12scheduler \
 	$(DEVICE_PREBUILT)/etc/init.d/13kernel:system/etc/init.d/13kernel \
 	$(DEVICE_PREBUILT)/etc/init.d/14multitouch:system/etc/init.d/14multitouch \
@@ -197,8 +229,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.telephony.call_ring.multiple=false \
 	ro.kernel.android.checkjni=0 \
 	ro.HOME_APP_ADJ=1 \
-	dalvik.vm.checkjni=false \
-	dalvik.vm.dexopt-data-only=1
+	dalvik.vm.checkjni=false
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise

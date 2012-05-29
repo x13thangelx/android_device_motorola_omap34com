@@ -3,6 +3,7 @@
 # options: 'noop cfq sio'
 SCHED='noop'
 
+sleep 30
 insmod /system/lib/modules/sio-iosched.ko
 
 echo $SCHED > /sys/block/mmcblk0/queue/scheduler
