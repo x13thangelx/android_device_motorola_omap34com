@@ -86,7 +86,9 @@ PRODUCT_COPY_FILES += \
 	system/bluetooth/data/main.conf:system/etc/bluetooth/main.conf
 
 # Core
-PRODUCT_PACKAGES += mot_boot_mode charge_only_mode lights.omap3
+PRODUCT_PACKAGES += \
+	mot_boot_mode charge_only_mode \
+	lights.omap3 e2fsck usbd
 
 # Apps and bin
 PRODUCT_PACKAGES += Superuser su FileManager Torch Usb
@@ -98,7 +100,7 @@ PRODUCT_PACKAGES += \
 	librs_jni
 
 # Themes
-PRODUCT_PACKAGES += ThemeChooser Androidian
+PRODUCT_PACKAGES += ThemeChooser
 
 # Key Layouts
 PRODUCT_COPY_FILES := \
@@ -169,7 +171,7 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/etc/powervr.ini:system/etc/powervr.ini \
 	$(DEVICE_PREBUILT)/etc/vold.fstab:system/etc/vold.fstab \
 	$(DEVICE_PREBUILT)/etc/sysctl.conf:system/etc/sysctl.conf \
-	$(DEVICE_PREBUILT)/etc/init.d/00adb_during_boot:system/etc/init.d/00adb_during_boot \
+	$(DEVICE_PREBUILT)/etc/init.d/06ion:system/etc/init.d/06ion \
 	$(DEVICE_PREBUILT)/etc/init.d/12scheduler:system/etc/init.d/12scheduler \
 	$(DEVICE_PREBUILT)/etc/init.d/13kernel:system/etc/init.d/13kernel \
 	$(DEVICE_PREBUILT)/etc/init.d/14multitouch:system/etc/init.d/14multitouch \
@@ -202,6 +204,10 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/bin/hijack:system/bin/hijack \
 	$(DEVICE_PREBUILT)/bin/hijack.log_dump:system/bin/hijack.log_dump \
 
+# HWUI Blacklist
+PRODUCT_COPY_FILES += \
+	device/motorola/omap34com/hwui-blacklist.txt:system/hwui-blacklist.txt
+
 # Copy all common kernel modules
 PRODUCT_COPY_FILES += $(shell \
 	find device/motorola/omap34com/modules -name '*.ko' \
@@ -229,7 +235,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.telephony.call_ring.multiple=false \
 	ro.kernel.android.checkjni=0 \
 	ro.HOME_APP_ADJ=1 \
-	dalvik.vm.checkjni=false
+	dalvik.vm.checkjni=false \
+	com.ti.omap_compat=1
+
+ifdef OMAP_ENHANCEMENT
+PRODUCT_PROPERTY_OVERRIDES += com.ti.omap_enhancement=true
+endif
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
