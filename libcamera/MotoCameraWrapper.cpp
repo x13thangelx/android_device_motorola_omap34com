@@ -46,7 +46,7 @@ static bool deviceCardMatches(const char *device, const char *matchCard)
     } else {
         const char *card = (const char *) caps.card;
 
-        LOGD("device %s card is %s\n", device, card);
+        ALOGD("device %s card is %s\n", device, card);
         ret = strstr(card, matchCard) != NULL;
     }
 
@@ -67,10 +67,10 @@ openMotoInterface(const char *libName, const char *funcName)
         if (func != NULL) {
             interface = func();
         } else {
-            LOGE("Could not find library entry point!");
+            ALOGE("Could not find library entry point!");
         }
     } else {
-        LOGE("dlopen() error: %s\n", dlerror());
+        ALOGE("dlopen() error: %s\n", dlerror());
     }
 
     return interface;
@@ -141,7 +141,7 @@ sp<MotoCameraWrapper> MotoCameraWrapper::createInstance(int cameraId)
         hardware = new MotoCameraWrapper(motoInterface, type);
         singleton = hardware;
     } else {
-        LOGE("Could not open hardware interface");
+        ALOGE("Could not open hardware interface");
     }
 
     return hardware;
@@ -288,7 +288,7 @@ void MotoCameraWrapper::fixUpBrokenGpsLatitudeRef(const sp<IMemory>& dataPtr)
             if (memcmp(data + i, sLatitudeRefMarker, sizeof(sLatitudeRefMarker)) == 0) {
                 char *ref = (char *) (data + i + sizeof(sLatitudeRefMarker));
                 if ((*ref == 'W' || *ref == 'E') && *(ref + 1) == '\0') {
-                    LOGI("Found broken GPS latitude ref marker, offset %d, item %c",
+                    ALOGI("Found broken GPS latitude ref marker, offset %d, item %c",
                          i + sizeof(sLatitudeRefMarker), *ref);
                     *ref = (*ref == 'W') ? 'N' : 'S';
                 }

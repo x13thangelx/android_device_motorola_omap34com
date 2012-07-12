@@ -55,7 +55,7 @@ public class GlobalNwSwitchService extends Service {
 
     private static final String TAG = "GlobalNwSwitchService";
     private static final String TAG_NETWORKMODE_SWITCH = "globalnwswitch";
-    //private static final String GLOBAL_PHONE_SIM_ABSENT_TAG = "GlobalPhoneRadioOffSimAbsentState";
+    private static final String GLOBAL_PHONE_SIM_ABSENT_TAG = "GlobalPhoneRadioOffSimAbsentState";
     private static final String ACTION_NETWORKMODE_SWITCH = "com.motorola.intent.action.NETWORKMODE_SWITCH";
 
     private static final int NW_MODE_CHANGE_TO_CDMA = 0;
