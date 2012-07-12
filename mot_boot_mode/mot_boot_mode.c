@@ -20,7 +20,7 @@
 #include <ctype.h>
 
 #include <cutils/properties.h>
-#include <cutils/log.h>
+#include <cutils/Log.h>
 
 #define MOTO_PU_REASON_CHARGER   0x00000100
 #define MOTO_PU_REASON_USB_CABLE 0x00000010
