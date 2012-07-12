@@ -36,7 +36,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "draw.h"
 
 #define LOG_TAG "CHARGE_ONLY_MODE"
-#include <utils/log.h>
+#include <utils/Log.h>
 
 struct FB {
     unsigned short *bits;

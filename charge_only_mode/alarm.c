@@ -28,7 +28,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "alarm.h"
 #define LOG_TAG "CHARGE_ONLY_MODE"
-#include <utils/log.h>
+#include <utils/Log.h>
 
 struct alarm_node
 {

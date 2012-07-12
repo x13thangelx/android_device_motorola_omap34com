@@ -27,7 +27,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <zlib.h>
 #define LOG_TAG "CHARGE_ONLY_MODE"
-#include <utils/log.h>
+#include <utils/Log.h>
 
 struct asset {
     int w;
