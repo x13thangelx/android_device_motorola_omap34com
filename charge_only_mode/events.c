@@ -37,7 +37,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "events.h"
 #include "hardware.h"
 #define LOG_TAG "CHARGE_ONLY_MODE"
-#include <cutils/log.h>
+#include <utils/log.h>
 #include <string.h>
 
 #define MAX_DEVICES 16
@@ -176,7 +176,7 @@ int ev_get(int timeout_ms)
                 ;
             if(strstr(msg, "cpcap_battery"))
             {
-                LOGD("cpcap_battery UEVENT msg : %s\n", msg);
+                ALOGD("cpcap_battery UEVENT msg : %s\n", msg);
                 return EVENT_BATTERY;
             }
 

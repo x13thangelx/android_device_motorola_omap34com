@@ -28,7 +28,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "alarm.h"
 #define LOG_TAG "CHARGE_ONLY_MODE"
-#include <cutils/log.h>
+#include <utils/log.h>
 
 struct alarm_node
 {
@@ -68,7 +68,7 @@ int alarm_get_time_until_next(void)
     gettimeofday(&now, NULL);
     delta = (alarms->alarm_time.tv_sec - now.tv_sec) * 1000 +
             (alarms->alarm_time.tv_usec - now.tv_usec) / 1000;
-    LOGD("alarm_get_time_until_next, delta = %d\n", delta);
+    ALOGD("alarm_get_time_until_next, delta = %d\n", delta);
     return delta;
 }
 

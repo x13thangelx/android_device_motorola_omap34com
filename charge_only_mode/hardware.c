@@ -31,7 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "events.h"
 #include "hardware.h"
 #define LOG_TAG "CHARGE_ONLY_MODE"
-#include <cutils/log.h>
+#include <utils/log.h>
 
 #include <hardware/hardware.h>
 #include <hardware/lights.h>
