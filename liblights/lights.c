@@ -17,7 +17,7 @@
 
 #define LOG_TAG "lights"
 
-#include <cutils/log.h>
+#include <utils/Log.h>
 
 #include <stdint.h>
 #include <string.h>
@@ -88,7 +88,7 @@ write_int(char const* path, int value)
         return amt == -1 ? -errno : 0;
     } else {
         if (already_warned == 0) {
-            LOGE("write_int failed to open %s\n", path);
+            ALOGE("write_int failed to open %s\n", path);
             already_warned = 1;
         }
         return -errno;
@@ -217,7 +217,7 @@ set_light_battery(struct light_device_t* dev,
             break;
     }
 #if 0
-    LOGD("set_light_battery color=%08X, blink=%d****************\n",
+    ALOGD("set_light_battery color=%08X, blink=%d****************\n",
             state->color, blink);
 #endif
     if (state->color == 0xffff0000) {
@@ -249,7 +249,7 @@ set_light_notification(struct light_device_t* dev,
             break;
     }
 #if 0
-    LOGD("set_light_notification color=%08X, blink=%d****************\n",
+    ALOGD("set_light_notification color=%08X, blink=%d****************\n",
             state->color, blink);
 #endif
     lastnotificationcolor = state->color;
@@ -284,7 +284,7 @@ set_light_attention(struct light_device_t* dev,
             break;
     }
 
-    LOGD("set_light_attention color=%08X, blink=%d****************\n",
+    ALOGD("set_light_attention color=%08X, blink=%d****************\n",
             state->color, blink);
 
     err = set_light_locked(state->color, blink);
