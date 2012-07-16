@@ -136,6 +136,7 @@ TARGET_NEEDS_MOTOROLA_HIJACK := true
 
 # OTA Packaging
 TARGET_PROVIDES_RELEASETOOLS := true
+TARGET_RELEASETOOL_EDIFY_FROM_TARGET_SCRIPT := device/motorola/omap34com/releasetools/droid_edify_generator.py
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/motorola/omap34com/releasetools/droid_ota_from_target_files
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/motorola/omap34com/releasetools/droid_img_from_target_files
 

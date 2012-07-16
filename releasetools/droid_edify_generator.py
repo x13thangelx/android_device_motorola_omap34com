@@ -101,21 +101,6 @@ class EdifyGenerator(object):
            ");")
     self.script.append(self._WordWrap(cmd))
 
-  def RunBackup(self, command):
-    self.script.append('package_extract_file("system/bin/backuptool.sh", "/tmp/backuptool.sh");')
-    self.script.append('set_perm(0, 0, 0777, "/tmp/backuptool.sh");')
-    self.script.append(('run_program("/tmp/backuptool.sh", "%s");' % command))
-
-  def RunChkKineto(self):
-    self.script.append('package_extract_file("system/bin/chkkineto.sh", "/tmp/chkkineto.sh");')
-    self.script.append('set_perm(0, 0, 0777, "/tmp/chkkineto.sh");')
-    self.script.append('run_program("/tmp/chkkineto.sh");')
-
-  def RunVerifyCachePartitionSize(self):
-    self.script.append('package_extract_file("system/bin/verify_cache_partition_size.sh", "/tmp/verify_cache_partition_size.sh");')
-    self.script.append('set_perm(0, 0, 0777, "/tmp/verify_cache_partition_size.sh");')
-    self.script.append('run_program("/tmp/verify_cache_partition_size.sh");')
-
   def RunFormatAndTuneSystem(self):
     mount_point = "/system"
     self.script.append('package_extract_file("system/bin/mke2fs", "/tmp/mke2fs");')
