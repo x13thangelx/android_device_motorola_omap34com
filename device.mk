@@ -175,7 +175,8 @@ PRODUCT_COPY_FILES += \
 
 # Hijack files
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PREBUILT)/bin/hijack.log_dump:system/bin/hijack.log_dump \
+    $(DEVICE_PREBUILT)/bin/hijack:system/bin/hijack \
+    $(DEVICE_PREBUILT)/bin/hijack.log_dump:system/bin/hijack.log_dump
 
 # Copy all common kernel modules
 PRODUCT_COPY_FILES += $(shell \
